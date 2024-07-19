@@ -30,14 +30,21 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final TextMessageHandler textMessageHandler;
     private final PetService petService;
     private final ShelterService shelterService;
+    private final VolunteerService volunteerService;
 
     @Autowired
-    public TelegramBot(BotConfig botConfig, CallBackQueryHandler callBackQueryHandler, TextMessageHandler textMessageHandler, PetService petService, ShelterService shelterService) {
+    public TelegramBot(BotConfig botConfig,
+                       CallBackQueryHandler callBackQueryHandler,
+                       TextMessageHandler textMessageHandler,
+                       PetService petService,
+                       ShelterService shelterService,
+                       VolunteerService volunteerService) {
         this.botConfig = botConfig;
         this.callBackQueryHandler = callBackQueryHandler;
         this.textMessageHandler = textMessageHandler;
         this.petService = petService;
         this.shelterService = shelterService;
+        this.volunteerService = volunteerService;
 
         // Инициализация списка команд для бота
         List<BotCommand> listOfCommands = new ArrayList<>();
@@ -158,6 +165,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         // Отправка сообщения в Telegram
         sendMessage(chatId, petsInfo.toString());
     }
+
+    public Long findRandomFreeVolunteer(){
+        var freeVolunteers = volunteerService.findAllVolunteersIsBusy(false);
+        if (freeVolunteers.isEmpty()) {
+            return null;
+        } else {
+            Random random = new Random();
+            var randomChatId = freeVolunteers.get(random.nextInt(freeVolunteers.size())).get().getChatId();
+            return randomChatId;
+        }
+
+    }
+
+
     public void showDirection(long chatId) {
         // Логика получения адреса из базы данных по shelterId и отправка сообщений в Telegram
         Optional<ShelterDto> shelterDto = shelterService.findShelterById(1L);

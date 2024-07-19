@@ -164,6 +164,11 @@ public class VolunteerController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    /**
+     * Обрабатывает GET-запрос для поиска всех волонтеров
+     *
+     * @return Подтверждение успешного поиска волонтеров
+     */
     @GetMapping("/all")
     @Operation(summary = "Get all volunteers",
             description = "Retrieves a list of all volunteers in the system",
@@ -173,6 +178,17 @@ public class VolunteerController {
             })
     public ResponseEntity<Collection<Volunteer>> getAllVolunteers() {
         return ResponseEntity.ok(volunteerService.getAllVolunteers());
+    }
+
+    @GetMapping("/all/{bool}")
+    @Operation(summary = "Get all volunteers by status isBusy",
+            description = "Retrieves a list of all volunteers by status true or false in the system",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Success"),
+                    @ApiResponse(responseCode = "400", description = "Invalid request")
+            })
+    public ResponseEntity<Collection<Optional<Volunteer>>> getAllVolunteersIsBusy(@PathVariable boolean bool) {
+        return ResponseEntity.ok(volunteerService.findAllVolunteersIsBusy(bool));
     }
 
 }

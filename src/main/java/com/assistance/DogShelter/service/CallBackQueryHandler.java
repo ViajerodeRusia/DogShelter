@@ -25,6 +25,7 @@ public class CallBackQueryHandler {
         String callbackData = update.getCallbackQuery().getData();
         long messageId = update.getCallbackQuery().getMessage().getMessageId();
         long chatId = update.getCallbackQuery().getMessage().getChatId();
+        String userName = update.getCallbackQuery().getFrom().getUserName();
         TelegramBot bot = applicationContext.getBean(TelegramBot.class);
         Long shelterId = null; // Объявляем shelterId для использования внутри метода
 
@@ -68,7 +69,16 @@ public class CallBackQueryHandler {
                     bot.sendMessage(chatId, Constants.TEXTPASSISSUANCE);
                     break;
                 case "CallVolunteer":
-                    bot.sendMessage(chatId, "Зовем волонтера");
+                    var chatIdVolunteer = bot.findRandomFreeVolunteer();
+                    if (chatIdVolunteer == null) {
+                        bot.sendMessage(chatId, "Извините, на текущий момент все волонтеры заняты." +
+                                "\nПопробуйте написать позже");
+                    } else {
+                        bot.sendMessage(chatId, "Ваши контакты были отправлены волонтеру." +
+                                "\nС вами свяжутся, ожидайте.");
+                        bot.sendMessage(chatIdVolunteer, "У пользователя @" + userName + " есть вопросы." +
+                                "\nПожалуйста, свяжитесь с ним");
+                    }
                     break;
                 case "OurPets":
                     // вытягиваем список из БД
