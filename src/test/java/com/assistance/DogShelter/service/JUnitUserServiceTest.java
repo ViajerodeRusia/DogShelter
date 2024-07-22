@@ -1,6 +1,6 @@
 package com.assistance.DogShelter.service;
 
-import com.assistance.DogShelter.db.model.User;
+import com.assistance.DogShelter.db.entity.User;
 import com.assistance.DogShelter.db.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

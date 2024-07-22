@@ -1,4 +1,4 @@
-package com.assistance.DogShelter.db.model;
+package com.assistance.DogShelter.db.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

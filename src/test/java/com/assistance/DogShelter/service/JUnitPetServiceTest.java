@@ -1,21 +1,16 @@
 package com.assistance.DogShelter.service;
 
 import com.assistance.DogShelter.controller.dto.PetDto;
-import com.assistance.DogShelter.db.model.Pet;
+import com.assistance.DogShelter.db.entity.Pet;
 import com.assistance.DogShelter.db.repository.PetRepository;
 import com.assistance.DogShelter.mapper.PetMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

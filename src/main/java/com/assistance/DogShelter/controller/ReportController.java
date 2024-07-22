@@ -1,7 +1,6 @@
 package com.assistance.DogShelter.controller;
 
-import com.assistance.DogShelter.db.model.Report;
-import com.assistance.DogShelter.db.model.Shelter;
+import com.assistance.DogShelter.db.entity.Report;
 import com.assistance.DogShelter.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Контроллер для обработки HTTP-запросов, связанных с отчетами.

@@ -1,9 +1,6 @@
 package com.assistance.DogShelter.controller;
-import com.assistance.DogShelter.db.model.DriveDirPicture;
-import com.assistance.DogShelter.db.model.PetAvatar;
+import com.assistance.DogShelter.db.entity.PetAvatar;
 import com.assistance.DogShelter.service.PetAvatarService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 
 /**
  * Контроллер для обработки HTTP-запросов, связанных с аватаром питомца.

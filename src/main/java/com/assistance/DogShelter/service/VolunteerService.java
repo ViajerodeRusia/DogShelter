@@ -1,13 +1,14 @@
 package com.assistance.DogShelter.service;
 
 import com.assistance.DogShelter.exceptions.VolunteerNotFoundException;
-import com.assistance.DogShelter.db.model.Volunteer;
+import com.assistance.DogShelter.db.entity.Volunteer;
 import com.assistance.DogShelter.db.repository.VolunteerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,7 +53,7 @@ public class VolunteerService {
     }
 
     /**
-     * Метод ищет свободного волонтера в базе данных.
+     * Метод ищет первого свободного волонтера в базе данных.
      *
      * @return Optional<Volunteer>
      */
@@ -116,5 +117,15 @@ public class VolunteerService {
      */
     public Collection<Volunteer> getAllVolunteers() {
         return volunteerRepository.findAll();
+    }
+
+    /**
+     * Метод выводит список всех волонтёров с заданным статусом isBusy.
+     *
+     * @param bool
+     * @return List<Optional<Volunteer>>
+     */
+    public List<Optional<Volunteer>> findAllVolunteersIsBusy(boolean bool) {
+        return volunteerRepository.findAllByIsBusy(bool);
     }
 }

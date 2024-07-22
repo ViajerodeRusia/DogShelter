@@ -3,8 +3,7 @@ package com.assistance.DogShelter.service;
 import com.assistance.DogShelter.config.BotConfig;
 import com.assistance.DogShelter.controller.dto.PetDto;
 import com.assistance.DogShelter.controller.dto.ShelterDto;
-import com.assistance.DogShelter.db.model.Pet;
-import com.assistance.DogShelter.db.model.Shelter;
+import com.assistance.DogShelter.db.entity.Shelter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;;
 import java.util.*;
 
 @Component
@@ -30,14 +30,21 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final TextMessageHandler textMessageHandler;
     private final PetService petService;
     private final ShelterService shelterService;
+    private final VolunteerService volunteerService;
 
     @Autowired
-    public TelegramBot(BotConfig botConfig, CallBackQueryHandler callBackQueryHandler, TextMessageHandler textMessageHandler, PetService petService, ShelterService shelterService) {
+    public TelegramBot(BotConfig botConfig,
+                       CallBackQueryHandler callBackQueryHandler,
+                       TextMessageHandler textMessageHandler,
+                       PetService petService,
+                       ShelterService shelterService,
+                       VolunteerService volunteerService) {
         this.botConfig = botConfig;
         this.callBackQueryHandler = callBackQueryHandler;
         this.textMessageHandler = textMessageHandler;
         this.petService = petService;
         this.shelterService = shelterService;
+        this.volunteerService = volunteerService;
 
         // Инициализация списка команд для бота
         List<BotCommand> listOfCommands = new ArrayList<>();
@@ -65,10 +72,16 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            textMessageHandler.handleTextMessage(update);
-        } else if (update.hasCallbackQuery()) {
+        if (update.hasCallbackQuery()) {
             callBackQueryHandler.handleCallbackQuery(update);
+        } else {
+            try {
+                textMessageHandler.handleTextMessage(update);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -143,6 +156,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.error("Ошибка при отправке меню информации о приюте: " + e.getMessage(), e);
         }
     }
+
     public void showPets(long chatId, long shelterId) {
         // Получение списка питомцев из базы данных по shelterId
         List<PetDto> pets = (List<PetDto>) petService.getPetsByShelterId(shelterId);
@@ -158,6 +172,21 @@ public class TelegramBot extends TelegramLongPollingBot {
         // Отправка сообщения в Telegram
         sendMessage(chatId, petsInfo.toString());
     }
+
+    public Long findRandomFreeVolunteer(){
+        var freeVolunteers = volunteerService.findAllVolunteersIsBusy(false);
+        if (freeVolunteers.isEmpty()) {
+            return null;
+        } else {
+            Random random = new Random();
+            var randomChatId = freeVolunteers.get(random.nextInt(freeVolunteers.size())).get().getChatId();
+            return randomChatId;
+        }
+
+    }
+
+
+
     public void showDirection(long chatId) {
         // Логика получения адреса из базы данных по shelterId и отправка сообщений в Telegram
         Optional<ShelterDto> shelterDto = shelterService.findShelterById(1L);
@@ -360,7 +389,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         InlineKeyboardButton buttonMenu3 = new InlineKeyboardButton("Рекомендации");
         buttonMenu3.setCallbackData("Recommendations");
-      
+
         InlineKeyboardButton buttonMenu4 = new InlineKeyboardButton("Дополнительно");
         buttonMenu4.setCallbackData("More");
 

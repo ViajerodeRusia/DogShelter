@@ -1,21 +1,13 @@
 package com.assistance.DogShelter.controller;
 
-import com.assistance.DogShelter.controller.dto.PetDto;
 import com.assistance.DogShelter.controller.dto.ShelterDto;
-import com.assistance.DogShelter.db.model.User;
-import com.assistance.DogShelter.db.repository.PetRepository;
+import com.assistance.DogShelter.db.entity.Shelter;
 import com.assistance.DogShelter.db.repository.ShelterRepository;
-import com.assistance.DogShelter.mapper.PetMapper;
 import com.assistance.DogShelter.mapper.ShelterMapper;
-import com.assistance.DogShelter.service.PetService;
 import com.assistance.DogShelter.service.ShelterService;
-import com.assistance.DogShelter.service.UserService;
 import jakarta.ws.rs.core.MediaType;
 import net.minidev.json.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,20 +15,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(ShelterController.class)
 class MVCShelterControllerTest {

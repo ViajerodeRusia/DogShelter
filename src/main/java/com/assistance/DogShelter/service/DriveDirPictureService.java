@@ -1,14 +1,14 @@
 package com.assistance.DogShelter.service;
 
 import com.assistance.DogShelter.controller.dto.ShelterDto;
-import com.assistance.DogShelter.db.model.DriveDirPicture;
-import com.assistance.DogShelter.db.model.Shelter;
+import com.assistance.DogShelter.db.entity.DriveDirPicture;
+import com.assistance.DogShelter.db.entity.Shelter;
 import com.assistance.DogShelter.db.repository.DriveDirPictureRepository;
 import com.assistance.DogShelter.mapper.ShelterMapper;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -42,15 +42,13 @@ public class DriveDirPictureService {
     }
 
     public void uploadCover(Long shelterId, MultipartFile file) throws IOException {
-        Optional<ShelterDto> shelterDtoOptional = shelterService.findShelterById(shelterId);
-        if (shelterDtoOptional.isEmpty()) {
-            throw new IllegalArgumentException("Shelter not found with id: " + shelterId);
+        Optional<ShelterDto> shelterDto = shelterService.findShelterById(shelterId);
+        if (shelterDto.isPresent()) {
+            throw new IllegalArgumentException("Shelter not found for id: " + shelterId);
         }
 
-        ShelterDto shelterDto = shelterDtoOptional.get();
-        Shelter shelter = shelterMapper.mapToShelter(shelterDto); // Преобразование DTO в сущность
-
-        Path filePath = Path.of(drivePictureDir, shelterId + "." + getExtension(Objects.requireNonNull(file.getOriginalFilename())));
+        Shelter shelter = shelterMapper.mapToShelter(shelterDto.get());
+        Path filePath = Path.of(drivePictureDir,shelterId + "." + getExtension(Objects.requireNonNull(file.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 

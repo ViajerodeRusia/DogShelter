@@ -1,6 +1,6 @@
 package com.assistance.DogShelter.service;
 
-import com.assistance.DogShelter.db.model.Volunteer;
+import com.assistance.DogShelter.db.entity.Volunteer;
 import com.assistance.DogShelter.db.repository.VolunteerRepository;
 import com.assistance.DogShelter.exceptions.VolunteerNotFoundException;
 import org.junit.jupiter.api.Assertions;

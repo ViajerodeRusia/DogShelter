@@ -1,4 +1,4 @@
-package com.assistance.DogShelter.db.model;
+package com.assistance.DogShelter.db.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Модель, представляющая приют.

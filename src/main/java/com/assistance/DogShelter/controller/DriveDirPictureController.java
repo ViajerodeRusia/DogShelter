@@ -1,6 +1,6 @@
 package com.assistance.DogShelter.controller;
 
-import com.assistance.DogShelter.db.model.DriveDirPicture;
+import com.assistance.DogShelter.db.entity.DriveDirPicture;
 import com.assistance.DogShelter.service.DriveDirPictureService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;

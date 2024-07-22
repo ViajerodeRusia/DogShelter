@@ -1,6 +1,6 @@
 package com.assistance.DogShelter.controller.dto;
 
-import com.assistance.DogShelter.db.model.User;
+import com.assistance.DogShelter.db.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

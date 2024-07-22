@@ -1,7 +1,9 @@
-package com.assistance.DogShelter.db.model;
+package com.assistance.DogShelter.db.entity;
 
 // Модель, представляющая пользователя
 
+import com.assistance.DogShelter.db.entity.Pet;
+import com.assistance.DogShelter.db.entity.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.glassfish.jersey.spi.Contract;
+import lombok.*;
 
 import java.util.List;
 import java.util.Set;
@@ -22,6 +25,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"id", "pets"})
+@ToString(exclude = {"pets", "reports"})
 
 public class User {
     @Id

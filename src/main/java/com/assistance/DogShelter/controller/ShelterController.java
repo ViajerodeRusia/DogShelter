@@ -1,8 +1,6 @@
 package com.assistance.DogShelter.controller;
 
-import com.assistance.DogShelter.controller.dto.PetDto;
 import com.assistance.DogShelter.controller.dto.ShelterDto;
-import com.assistance.DogShelter.db.model.Shelter;
 import com.assistance.DogShelter.service.ShelterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -60,10 +58,13 @@ public class ShelterController {
                     @ApiResponse(responseCode = "400", description = "Invalid request"),
                     @ApiResponse(responseCode = "404", description = "Shelter not found")
             })
-    public ResponseEntity<ShelterDto> findShelterById(@PathVariable Long id) {
-        Optional<ShelterDto> shelter = shelterService.findShelterById(id);
-        return shelter.map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<Optional<ShelterDto>> findShelterById(@PathVariable Long id) {
+        Optional<ShelterDto> shelterDto = shelterService.findShelterById(id);
+        if (shelterDto.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(shelterDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
 
@@ -71,7 +72,7 @@ public class ShelterController {
      * Обрабатывает PUT-запрос для редактирования приюта.
      *
      * @param shelterDto Приют с обновленными данными в теле запроса.
-     * @param id      Идентификатор редактируемого приюта.
+     * @param id         Идентификатор редактируемого приюта.
      * @return Обновленный приют, если редактирование выполнено успешно, в противном случае возвращает 404 ошибку.
      */
     @PutMapping("{id}")
@@ -85,7 +86,6 @@ public class ShelterController {
     public ResponseEntity<ShelterDto> editShelter(@RequestBody ShelterDto shelterDto, @PathVariable Long id) {
         Optional<ShelterDto> foundShelter = shelterService.findShelterById(id);
         if (foundShelter.isPresent()) {
-            shelterDto.setId(id); // Убедитесь, что ID установлен для обновления
             ShelterDto updatedShelter = shelterService.editShelter(shelterDto);
             return ResponseEntity.status(HttpStatus.OK).body(updatedShelter);
         }

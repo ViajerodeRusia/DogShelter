@@ -1,7 +1,7 @@
 package com.assistance.DogShelter.notification;
 
-import com.assistance.DogShelter.db.model.Pet;
-import com.assistance.DogShelter.db.model.User;
+import com.assistance.DogShelter.db.entity.Pet;
+import com.assistance.DogShelter.db.entity.User;
 import com.assistance.DogShelter.db.repository.PetRepository;
 import com.assistance.DogShelter.db.repository.UserRepository;
 import com.assistance.DogShelter.service.TelegramBot;

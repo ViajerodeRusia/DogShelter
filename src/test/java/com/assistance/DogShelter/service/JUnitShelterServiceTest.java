@@ -1,7 +1,7 @@
 package com.assistance.DogShelter.service;
 
 import com.assistance.DogShelter.controller.dto.ShelterDto;
-import com.assistance.DogShelter.db.model.Shelter;
+import com.assistance.DogShelter.db.entity.Shelter;
 import com.assistance.DogShelter.db.repository.ShelterRepository;
 import com.assistance.DogShelter.mapper.ShelterMapper;
 import org.junit.jupiter.api.Assertions;

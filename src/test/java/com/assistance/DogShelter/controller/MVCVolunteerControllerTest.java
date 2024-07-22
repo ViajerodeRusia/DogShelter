@@ -1,5 +1,5 @@
 package com.assistance.DogShelter.controller;
-import com.assistance.DogShelter.db.model.Volunteer;
+import com.assistance.DogShelter.db.entity.Volunteer;
 import com.assistance.DogShelter.service.VolunteerService;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;

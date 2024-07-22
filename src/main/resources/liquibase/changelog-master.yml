@@ -1,7 +1,7 @@
 databaseChangeLog:
   - property:
       name: changeset.id.sequence
-      value: 11
+      value: 18
 
   - changeSet:
       id: 1
@@ -54,49 +54,77 @@ databaseChangeLog:
 
   - changeSet:
       id: 8
-      author: mmaksimov
-      changes:
-        - sqlFile:
-            path: liquibase/scripts/photo-reports-tables.sql
-
-  - changeSet:
-      id: 9
       author: dsiliukov
       changes:
         - sqlFile:
             path: liquibase/scripts/shelters-insert.sql
 
   - changeSet:
-      id: 10
+      id: 9
       author: dsiliukov
       changes:
         - sqlFile:
             path: liquibase/scripts/pets-insert.sql
 
   - changeSet:
-      id: 11
+      id: 10
       author: dsiliukov
       changes:
         - sqlFile:
             path: liquibase/scripts/pets-tables-column-user-id.sql
 
   - changeSet:
-      id: 12
-      author: mmaksimov
+      id: 11
+      author: dkhan
       changes:
         - sqlFile:
-            path: liquibase/scripts/change-users-and-reports.sql
+            path: liquibase/scripts/reports-tables-column-user-id.sql
+
+  - changeSet:
+      id: 12
+      author: dsiliukov
+      changes:
+        - sqlFile:
+            path: liquibase/scripts/drive-dir-pictures-delete-pet-id.sql
 
   - changeSet:
       id: 13
-      author: mmaksimov
+      author: dsiliukov
       changes:
         - sqlFile:
-            path: liquibase/scripts/change-pets-date.sql
+            path: liquibase/scripts/photos-tables.sql
 
   - changeSet:
       id: 14
-      author: mmaksimov
+      author: dsiliukov
       changes:
         - sqlFile:
-            path: liquibase/scripts/change-users-extension.sql
+            path: liquibase/scripts/photos-add.sql
+
+  - changeSet:
+      id: 15
+      author: dsiliukov
+      changes:
+        - sqlFile:
+            path: liquibase/scripts/photos-fix.sql
+
+  - changeSet:
+      id: 16
+      author: dsiliukov
+      changes:
+        - sqlFile:
+            path: liquibase/scripts/photos-fix2.sql
+
+  - changeSet:
+      id: 17
+      author: dsiliukov
+      changes:
+        - sqlFile:
+            path: liquibase/scripts/pets-add.sql
+
+  - changeSet:
+      id: 18
+      author: dsiliukov
+      changes:
+        - sqlFile:
+            path: liquibase/scripts/users-add.sql

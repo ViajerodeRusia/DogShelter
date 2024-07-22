@@ -1,7 +1,7 @@
 package com.assistance.DogShelter.mapper;
 
 import com.assistance.DogShelter.controller.dto.PetDto;
-import com.assistance.DogShelter.db.model.Pet;
+import com.assistance.DogShelter.db.entity.Pet;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

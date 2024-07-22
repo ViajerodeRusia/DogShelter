@@ -1,6 +1,6 @@
 package com.assistance.DogShelter.service;
 
-import com.assistance.DogShelter.db.model.Volunteer;
+import com.assistance.DogShelter.db.entity.Volunteer;
 import com.assistance.DogShelter.db.repository.VolunteerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,15 @@ public class VolunteerRegistrationService {
 
     public void registerVolunteer(Update update) {
         long chatId = update.getMessage().getChatId();
+        TelegramBot bot = applicationContext.getBean(TelegramBot.class);
+        if (volunteerRepository.findByChatId(chatId).isPresent()) {
+            bot.sendMessage(chatId, "Вы уже зарегистрированы как волонтер.");
+        } else {
+            askForName(chatId);
+        }
+    }
+
+    public void registerVolunteer(long chatId) {
         TelegramBot bot = applicationContext.getBean(TelegramBot.class);
         if (volunteerRepository.findByChatId(chatId).isPresent()) {
             bot.sendMessage(chatId, "Вы уже зарегистрированы как волонтер.");

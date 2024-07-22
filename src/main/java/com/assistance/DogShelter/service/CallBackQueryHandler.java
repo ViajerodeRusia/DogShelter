@@ -11,12 +11,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 public class CallBackQueryHandler {
     private final VolunteerRegistrationService volunteerRegistrationService;
+    private final ReportSendFormService reportSendFormService;
     private final TextMessageHandler textMessageHandler;
     private final ApplicationContext applicationContext;
 
     @Autowired
-    public CallBackQueryHandler(VolunteerRegistrationService volunteerRegistrationService, TextMessageHandler textMessageHandler, ApplicationContext applicationContext) {
+    public CallBackQueryHandler(VolunteerRegistrationService volunteerRegistrationService, ReportSendFormService reportSendFormService, TextMessageHandler textMessageHandler, ApplicationContext applicationContext) {
         this.volunteerRegistrationService = volunteerRegistrationService;
+        this.reportSendFormService = reportSendFormService;
         this.textMessageHandler = textMessageHandler;
         this.applicationContext = applicationContext;
     }
@@ -25,6 +27,7 @@ public class CallBackQueryHandler {
         String callbackData = update.getCallbackQuery().getData();
         long messageId = update.getCallbackQuery().getMessage().getMessageId();
         long chatId = update.getCallbackQuery().getMessage().getChatId();
+        String userName = update.getCallbackQuery().getFrom().getUserName();
         TelegramBot bot = applicationContext.getBean(TelegramBot.class);
         Long shelterId = null; // Объявляем shelterId для использования внутри метода
 
@@ -68,7 +71,16 @@ public class CallBackQueryHandler {
                     bot.sendMessage(chatId, Constants.TEXTPASSISSUANCE);
                     break;
                 case "CallVolunteer":
-                    bot.sendMessage(chatId, "Зовем волонтера");
+                    var chatIdVolunteer = bot.findRandomFreeVolunteer();
+                    if (chatIdVolunteer == null) {
+                        bot.sendMessage(chatId, "Извините, на текущий момент все волонтеры заняты." +
+                                "\nПопробуйте написать позже");
+                    } else {
+                        bot.sendMessage(chatId, "Ваши контакты были отправлены волонтеру." +
+                                "\nС вами свяжутся, ожидайте.");
+                        bot.sendMessage(chatIdVolunteer, "У пользователя @" + userName + " есть вопросы." +
+                                "\nПожалуйста, свяжитесь с ним");
+                    }
                     break;
                 case "OurPets":
                     // вытягиваем список из БД
@@ -87,7 +99,7 @@ public class CallBackQueryHandler {
                     // - задел на будущее
                     break;
                 case "RegisterVolunteer":
-                    volunteerRegistrationService.registerVolunteer(update);
+                    volunteerRegistrationService.registerVolunteer(chatId);
                     break;
                 case "Transporting":
                     bot.sendMessage(chatId, Constants.RECOMMENDATIONSFORTRANSPORTINGPETS);
@@ -107,6 +119,9 @@ public class CallBackQueryHandler {
                 case "DogHandler":
                     bot.sendMessage(chatId, Constants.RECOMMENDEDDOGHANDLER);
                     break;
+                case "Report":
+                    reportSendFormService.sendReportForm(chatId);
+                    break;
                 case "ComeBack1":
                     bot.choosingMenu(chatId);
                     break;
@@ -115,7 +130,8 @@ public class CallBackQueryHandler {
             }
         } catch (Exception e) {
             log.error("Error while handling callback query: " + callbackData, e);
-            bot.sendMessage(chatId, "Произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже.");
+            bot.sendMessage(chatId, "Произошла ошибка при обработке вашего запроса. " +
+                    "Пожалуйста, попробуйте позже.");
         }
     }
 }
